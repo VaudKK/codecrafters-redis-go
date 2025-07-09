@@ -18,7 +18,7 @@ func main() {
 	}
 
 	for {
-		
+
 		connection, err := l.Accept()
 		if err != nil {
 			fmt.Println("Error accepting connection: ", err.Error())
