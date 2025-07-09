@@ -25,7 +25,13 @@ func main() {
 			os.Exit(1)
 		}
 
-		connection.Write([]byte("+PONG\r\n"))
+		go handleConnection(connection)
 	}
 
+}
+
+func handleConnection (connection net.Conn){
+	defer connection.Close()
+
+	connection.Write([]byte("+PONG\r\n"))
 }
