@@ -35,16 +35,12 @@ func main() {
 func handleConnection(connection net.Conn) {
 	defer connection.Close()
 
-	request := ""
-
 	scanner := bufio.NewScanner(connection)
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		request += fmt.Sprintf("%s\r\n", line)
+		handle(line, connection)
 	}
-
-	handle(request, connection)
 
 }
 
