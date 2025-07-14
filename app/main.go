@@ -44,6 +44,8 @@ func handleConnection(connection net.Conn) {
 		request += line
 	}
 
+	fmt.Println("Reached here")
+
 	handle(request, connection)
 
 }
