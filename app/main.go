@@ -37,16 +37,12 @@ func handleConnection(connection net.Conn) {
 
 	scanner := bufio.NewScanner(connection)
 
-	request := ""
-
 	for scanner.Scan() {
 		line := scanner.Text()
-		request += line
+		handle(line, connection)
 	}
 
-	fmt.Println("Reached here")
-
-	handle(request, connection)
+	fmt.Println("Connection closed by client")
 
 }
 
