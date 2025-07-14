@@ -47,6 +47,8 @@ func handleConnection(connection net.Conn) {
 func handle(line string,connection net.Conn) {
 	firstByte := []string {"+","-",":","*"}
 
+	fmt.Println("Received line:", line)
+
 	for _, prefix := range firstByte {
 		if strings.HasPrefix(line, prefix) {
 			handleEncodedCommand(line, connection)
