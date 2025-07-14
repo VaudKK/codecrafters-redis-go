@@ -47,8 +47,8 @@ func handleConnection(connection net.Conn) {
 	handle(request, connection)
 }
 
-func handle(line string,connection net.Conn) {
-	firstByte := []string {"+","-",":","*"}
+func handle(line string, connection net.Conn) {
+	firstByte := []string{"+", "-", ":", "*"}
 
 	fmt.Println("Received line:", line)
 
@@ -62,9 +62,8 @@ func handle(line string,connection net.Conn) {
 	handleBasicCommand(line, connection)
 }
 
-
 func handleBasicCommand(line string, connection net.Conn) {
-	command := strings.Split(line, " ");
+	command := strings.Split(line, " ")
 
 	switch strings.ToUpper(command[0]) {
 	case "PING":
@@ -76,7 +75,7 @@ func handleBasicCommand(line string, connection net.Conn) {
 	}
 }
 
-func handleEncodedCommand(line string,connection net.Conn){
-	dataType,tokens := getRESPType(line)
+func handleEncodedCommand(line string, connection net.Conn) {
+	dataType, tokens := getRESPType(line)
 	parse(dataType, tokens)
 }
