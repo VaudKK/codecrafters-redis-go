@@ -41,7 +41,7 @@ func handleConnection(connection net.Conn) {
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		request += line + "\r\n"
+		request += fmt.Sprintf("%s\r\n", line)
 	}
 
 	handle(request, connection)
