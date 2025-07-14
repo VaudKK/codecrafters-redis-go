@@ -1,8 +1,8 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
+	"io"
 	"net"
 	"os"
 	"strings"
@@ -35,14 +35,16 @@ func main() {
 func handleConnection(connection net.Conn) {
 	defer connection.Close()
 
-	scanner := bufio.NewScanner(connection)
+	data, err := io.ReadAll(connection)
 
-	for scanner.Scan() {
-		line := scanner.Text()
-		handle(line, connection)
+	if err != nil {
+		fmt.Println("Error reading from connection: ", err.Error())
+		return
 	}
 
-	fmt.Println("Connection closed by client")
+	fmt.Println("Received data from client:", string(data))
+
+	handle(string(data), connection)
 
 }
 
