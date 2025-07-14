@@ -39,20 +39,39 @@ func handleConnection(connection net.Conn) {
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		handleCommand(line, connection)
+		handle(line, connection)
 	}
 
 }
 
-func handleCommand(line string, connection net.Conn) {
+func handle(line string,connection net.Conn) {
+	firstByte := []string {"+","-",":","*"}
+
+	for _, prefix := range firstByte {
+		if strings.HasPrefix(line, prefix) {
+			handleEncodedCommand(line, connection)
+			return
+		}
+	}
+
+	handleBasicCommand(line, connection)
+}
+
+
+func handleBasicCommand(line string, connection net.Conn) {
 	command := strings.Split(line, " ");
 
 	switch strings.ToUpper(command[0]) {
 	case "PING":
-		connection.Write([]byte("+PONG\r\n"))
+		pingBasic(connection)
 	case "ECHO":
 		echo(command[1:], connection)
 	default:
 		connection.Write([]byte("-ERR unknown command '" + command[0] + "'\r\n"))
 	}
+}
+
+func handleEncodedCommand(line string,connection net.Conn){
+	dataType,tokens := getRESPType(line)
+	parse(dataType, tokens)
 }
