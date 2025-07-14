@@ -37,10 +37,14 @@ func handleConnection(connection net.Conn) {
 
 	scanner := bufio.NewScanner(connection)
 
+	request := ""
+
 	for scanner.Scan() {
 		line := scanner.Text()
-		handle(line, connection)
+		request += line + "\r\n"
 	}
+
+	handle(request, connection)
 
 }
 
