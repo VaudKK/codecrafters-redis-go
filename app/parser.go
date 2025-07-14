@@ -50,5 +50,3 @@ func parseArray(tokens []string) []string {
 	return data
 
 }
-
-func delegate()
