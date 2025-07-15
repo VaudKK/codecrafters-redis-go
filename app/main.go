@@ -54,15 +54,13 @@ func handle(line []byte, connection net.Conn) {
 
 	for _, prefix := range firstByte {
 		if line[0] == byte(prefix) {
-			handleEncodedCommand(strings.TrimRight(string(line), "\x00"), connection)
+			handleCommand(strings.TrimRight(string(line), "\x00"), connection)
 			return
 		}
 	}
 }
 
-
-
-func handleEncodedCommand(line string, connection net.Conn) {
+func handleCommand(line string, connection net.Conn) {
 	dataType, tokens := getRESPType(line)
 	parse(dataType, tokens, connection)
 }
