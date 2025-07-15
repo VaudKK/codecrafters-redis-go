@@ -27,7 +27,7 @@ func main() {
 			os.Exit(1)
 		}
 
-		handleConnection(connection)
+		go handleConnection(connection)
 	}
 
 }
@@ -35,11 +35,14 @@ func main() {
 func handleConnection(connection net.Conn) {
 	defer connection.Close()
 
-	data, err := io.ReadAll(connection)
+	data := make([]byte, 2048)
+	_, err := connection.Read(data)
 
 	if err != nil {
-		fmt.Println("Error reading from connection: ", err.Error())
-		return
+		if err != io.EOF {
+			fmt.Println("Error reading from connection: ", err.Error())
+			return
+		}
 	}
 
 	fmt.Println("Received data from client:", string(data))
