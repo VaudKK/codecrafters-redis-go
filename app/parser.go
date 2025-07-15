@@ -7,6 +7,7 @@ type RESPType int
 const (
 	SimpleString RESPType = iota
 	Integer
+	BulkString
 	Arrays
 )
 
