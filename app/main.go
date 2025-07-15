@@ -51,8 +51,6 @@ func handleConnection(connection net.Conn) {
 func handle(line []byte, connection net.Conn) {
 	firstByte := []int32{'+', '-', ':', '*'}
 
-	fmt.Printf("Received data: %s\n", strings.TrimRight(string(line), "\x00"))
-
 	for _, prefix := range firstByte {
 		if line[0] == byte(prefix) {
 			handleCommand(strings.TrimRight(string(line), "\x00"), connection)
