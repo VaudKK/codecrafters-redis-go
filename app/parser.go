@@ -16,8 +16,12 @@ const (
 )
 
 func getRESPType(line string) (RESPType, []string) {
-	fmt.Println("getRESPType: ", line)
 	tokens := strings.Split(line, "\r\n")
+
+	// remove the last empty token if it exists
+	if tokens[len(tokens)-1] == "" {
+		tokens = tokens[:len(tokens)-1]
+	}
 
 	if strings.HasPrefix(tokens[0], "*") {
 		return Arrays, tokens
