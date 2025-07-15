@@ -35,7 +35,7 @@ func main() {
 func handleConnection(connection net.Conn) {
 	defer connection.Close()
 
-	data := make([]byte, 0, 2048)
+	data := make([]byte,2048)
 	_, err := connection.Read(data)
 
 	if err != nil {
