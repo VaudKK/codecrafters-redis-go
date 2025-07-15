@@ -58,17 +58,11 @@ func handle(line []byte, connection net.Conn) {
 			return
 		}
 	}
+
+	connection.Write([]byte("+PONG\r\n"))
 }
 
 func handleCommand(line string, connection net.Conn) {
 	dataType, tokens := getRESPType(line)
 	parse(dataType, tokens, connection)
-}
-
-func handlePlainCommand(line string,connection net.Conn){
-	if strings.ToLower(line) == "ping" {
-		pingBasic(connection)
-	} else {
-		connection.Write([]byte("-ERR unknown command '" + line + "'\r\n"))
-	}
 }
