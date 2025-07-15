@@ -35,7 +35,7 @@ func main() {
 func handleConnection(connection net.Conn) {
 	defer connection.Close()
 
-	data := make([]byte, 2048)
+	data := make([]byte,0,1024)
 	_, err := connection.Read(data)
 
 	if err != nil {
@@ -54,12 +54,12 @@ func handle(line []byte, connection net.Conn) {
 
 	for _, prefix := range firstByte {
 		if line[0] == byte(prefix) {
-			handleEncodedCommand(string(line), connection)
+			handleEncodedCommand(strings.TrimRight(string(line),"\x00"), connection)
 			return
 		}
 	}
 
-	handleBasicCommand(string(line), connection)
+	handleBasicCommand(strings.TrimRight(string(line),"\x00"), connection)
 }
 
 func handleBasicCommand(line string, connection net.Conn) {
