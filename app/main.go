@@ -28,8 +28,6 @@ func main() {
 		}
 
 		go handleConnection(connection)
-
-		fmt.Println("Accepted new connection from", connection.RemoteAddr())
 	}
 
 }
