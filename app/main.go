@@ -35,18 +35,23 @@ func main() {
 func handleConnection(connection net.Conn) {
 	defer connection.Close()
 
-	data := make([]byte, 2048)
-	_, err := connection.Read(data)
+	for{
+		data := make([]byte, 2048)
+		_, err := connection.Read(data)
 
-	if err != nil {
-		if err != io.EOF {
-			fmt.Println("Error reading from connection: ", err.Error())
-			return
+		if err != nil {
+			if err == io.EOF {
+				return
+			}
+
+			if err != io.EOF {
+				fmt.Println("Error reading from connection: ", err.Error())
+				return
+			}
 		}
-	}
 
-	handle(data, connection)
-	data = nil
+		handle(data, connection)
+	}
 }
 
 func handle(line []byte, connection net.Conn) {
@@ -54,13 +59,9 @@ func handle(line []byte, connection net.Conn) {
 
 	for _, prefix := range firstByte {
 		if line[0] == byte(prefix) {
-			handleCommand(strings.TrimRight(string(line), "\x00"), connection)
+			dataType, tokens := getRESPType(strings.TrimRight(string(line), "\x00"))
+			parse(dataType, tokens, connection)
 			return
 		}
 	}
-}
-
-func handleCommand(line string, connection net.Conn) {
-	dataType, tokens := getRESPType(line)
-	parse(dataType, tokens, connection)
 }
