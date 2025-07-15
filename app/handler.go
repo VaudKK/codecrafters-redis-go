@@ -21,7 +21,9 @@ func echo(tokens []string, connection net.Conn) {
 }
 
 func ping(tokens []string,connection net.Conn) {
-	_,err := connection.Write([]byte("+PONG\r\n"))
+	n,err := connection.Write([]byte("+PONG\r\n"))
+
+	fmt.Printf("Sent %d bytes to connection\n", n)
 
 	if err != nil {
 		fmt.Println("Error writing to connection:", err.Error())
