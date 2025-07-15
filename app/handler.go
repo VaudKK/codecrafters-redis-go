@@ -21,6 +21,10 @@ func echo(tokens []string, connection net.Conn) {
 }
 
 func ping(tokens []string,connection net.Conn) {
-	fmt.Printf("Received PING command with tokens: %v\n", tokens)
-	connection.Write([]byte("+PONG\r\n"))
+	_,err := connection.Write([]byte("+PONG\r\n"))
+
+	if err != nil {
+		fmt.Println("Error writing to connection:", err.Error())
+		return
+	}
 }
