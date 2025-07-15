@@ -61,7 +61,6 @@ func handle(line []byte, connection net.Conn) {
 }
 
 func handleCommand(line string, connection net.Conn) {
-	fmt.Println("Received command:", line)
 	dataType, tokens := getRESPType(line)
 	parse(dataType, tokens, connection)
 }
