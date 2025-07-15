@@ -58,6 +58,9 @@ func handle(line []byte, connection net.Conn) {
 		if line[0] == byte(prefix) {
 			handleCommand(strings.TrimRight(string(line), "\x00"), connection)
 			return
+		}else{
+			handlePlainCommand(strings.TrimRight(string(line), "\x00"), connection)
+			return
 		}
 	}
 }
@@ -65,4 +68,12 @@ func handle(line []byte, connection net.Conn) {
 func handleCommand(line string, connection net.Conn) {
 	dataType, tokens := getRESPType(line)
 	parse(dataType, tokens, connection)
+}
+
+func handlePlainCommand(line string,connection net.Conn){
+	if strings.ToLower(line) == "ping" {
+		pingBasic(connection)
+	} else {
+		connection.Write([]byte("-ERR unknown command '" + line + "'\r\n"))
+	}
 }
