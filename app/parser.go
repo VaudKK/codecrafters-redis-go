@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net"
 	"strings"
 )
@@ -15,6 +16,7 @@ const (
 )
 
 func getRESPType(line string) (RESPType, []string) {
+	fmt.Println("getRESPType: ", line)
 	tokens := strings.Split(line, "\r\n")
 
 	if strings.HasPrefix(tokens[0], "*") {
