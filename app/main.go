@@ -45,8 +45,6 @@ func handleConnection(connection net.Conn) {
 		}
 	}
 
-	fmt.Println("Received data from client:", string(data))
-
 	handle(data, connection)
 
 }
@@ -79,5 +77,5 @@ func handleBasicCommand(line string, connection net.Conn) {
 
 func handleEncodedCommand(line string, connection net.Conn) {
 	dataType, tokens := getRESPType(line)
-	parse(dataType, tokens)
+	parse(dataType, tokens,connection)
 }

@@ -1,6 +1,10 @@
 package main
 
-import "strings"
+import (
+	"fmt"
+	"net"
+	"strings"
+)
 
 type RESPType int
 
@@ -23,10 +27,11 @@ func getRESPType(line string) (RESPType, []string) {
 	return SimpleString, tokens
 }
 
-func parse(respType RESPType,tokens []string){
+func parse(respType RESPType,tokens []string, connection net.Conn) {
 	switch respType {
 	case Arrays:
-		parseArray(tokens)
+		tokens := parseArray(tokens)
+		fmt.Println("First token in array:", tokens[0])
 	default:
 		panic("Unknown RESP type")
 	}
