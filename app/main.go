@@ -47,23 +47,21 @@ func handleConnection(connection net.Conn) {
 
 	fmt.Println("Received data from client:", string(data))
 
-	handle(string(data), connection)
+	handle(data, connection)
 
 }
 
-func handle(line string, connection net.Conn) {
-	firstByte := []string{"+", "-", ":", "*"}
-
-	fmt.Println("Received line:", line)
+func handle(line []byte, connection net.Conn) {
+	firstByte := []int32{'+', '-', ':', '*'}
 
 	for _, prefix := range firstByte {
-		if strings.HasPrefix(line, prefix) {
-			handleEncodedCommand(line, connection)
+		if line[0] == byte(prefix) {
+			handleEncodedCommand(string(line), connection)
 			return
 		}
 	}
 
-	handleBasicCommand(line, connection)
+	handleBasicCommand(string(line), connection)
 }
 
 func handleBasicCommand(line string, connection net.Conn) {
