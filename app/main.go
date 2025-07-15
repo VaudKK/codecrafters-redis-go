@@ -58,11 +58,10 @@ func handle(line []byte, connection net.Conn) {
 			return
 		}
 	}
-
-	connection.Write([]byte("+PONG\r\n"))
 }
 
 func handleCommand(line string, connection net.Conn) {
+	fmt.Println("Received command:", line)
 	dataType, tokens := getRESPType(line)
 	parse(dataType, tokens, connection)
 }
