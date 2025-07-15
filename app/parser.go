@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net"
 	"strings"
 )
@@ -35,7 +34,6 @@ func getRESPType(line string) (RESPType, []string) {
 func parse(respType RESPType,tokens []string, connection net.Conn) {
 	switch respType {
 	case Arrays:
-		fmt.Printf("Array tokens: %v\n", tokens)
 		tokens := parseArray(tokens)
 		handler := Handler[tokens[0]]
 		handler(tokens, connection)
