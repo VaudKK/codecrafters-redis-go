@@ -28,11 +28,15 @@ func main() {
 		}
 
 		go handleConnection(connection)
+
+		fmt.Println("Accepted new connection from", connection.RemoteAddr())
 	}
 
 }
 
 func handleConnection(connection net.Conn) {
+	defer connection.Close()
+
 	data := make([]byte, 2048)
 	_, err := connection.Read(data)
 
