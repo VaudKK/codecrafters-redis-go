@@ -21,6 +21,5 @@ func echo(tokens []string, connection net.Conn) {
 }
 
 func ping(tokens []string,connection net.Conn) {
-	fmt.Println("Received PING command")
 	connection.Write([]byte("+PONG\r\n"))
 }

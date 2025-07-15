@@ -46,7 +46,6 @@ func handleConnection(connection net.Conn) {
 	}
 
 	handle(data, connection)
-
 }
 
 func handle(line []byte, connection net.Conn) {
