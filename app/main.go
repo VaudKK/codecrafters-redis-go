@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"net"
@@ -28,6 +29,15 @@ func main() {
 		}
 
 		go handleConnection(connection)
+
+		reader := bufio.NewReader(os.Stdin)
+		input, err := reader.ReadString('\n') // Reads until a newline character
+		if err != nil {
+			fmt.Println("Error reading input:", err)
+			return
+		}
+		name := strings.TrimSpace(input) // Removes leading/trailing whitespace, including the newline
+		fmt.Printf("Hello, %s!\n", name)
 	}
 
 }
