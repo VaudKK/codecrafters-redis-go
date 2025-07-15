@@ -57,12 +57,13 @@ func set(tokens []string, connection net.Conn) {
 func setPx(key string, px int64){
 	value := keyValue[key]
 	value.expiration = time.Now().UnixMilli() + px
+	keyValue[key] = value
 }
 
 
 func get(tokens []string, connection net.Conn) {
 	value, ok := keyValue[tokens[1]]
-	if !ok || value.expiration < time.Now().UnixMilli() {
+	if !ok || (value.expiration > -1 && value.expiration < time.Now().UnixMilli()) {
 		connection.Write([]byte("$-1\r\n"))
 		return
 	}
