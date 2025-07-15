@@ -31,7 +31,7 @@ func parse(respType RESPType,tokens []string, connection net.Conn) {
 	switch respType {
 	case Arrays:
 		tokens := parseArray(tokens)
-		fmt.Println("First token in array:", tokens[0])
+		fmt.Println("Parsed Array:", tokens)
 	default:
 		panic("Unknown RESP type")
 	}
