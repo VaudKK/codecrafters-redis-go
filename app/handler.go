@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"net"
+	"strconv"
+	"time"
 )
 
 
@@ -13,7 +15,10 @@ import (
 	"GET":  get,
 }
 
-var keyValue = make(map[string]string)
+var keyValue = make(map[string]struct{
+	value string
+	expiration int64
+})
 
 
 func echo(tokens []string, connection net.Conn) {
@@ -32,19 +37,36 @@ func set(tokens []string, connection net.Conn) {
 	_,ok := keyValue[tokens[1]]
 
 	if !ok {
-		keyValue[tokens[1]] = tokens[2]
+		keyValue[tokens[1]] = struct{value string; expiration int64}{
+			value: tokens[2],
+			expiration: -1,
+		}
+	}
+
+	// set the expirtation time if provided
+	if len(tokens) > 3 {
+		px, err := strconv.Atoi(tokens[4])
+		if err == nil {
+			setPx(tokens[1], int64(px))
+		}
 	}
 
 	connection.Write([]byte("+OK\r\n"))
 }
 
+func setPx(key string, px int64){
+	value := keyValue[key]
+	value.expiration = time.Now().UnixMilli() + px
+}
+
+
 func get(tokens []string, connection net.Conn) {
 	value, ok := keyValue[tokens[1]]
-	if !ok {
+	if !ok || value.expiration < time.Now().UnixMilli() {
 		connection.Write([]byte("$-1\r\n"))
 		return
 	}
 
-	response := fmt.Sprintf("$%d\r\n%s\r\n", len(value), value)
+	response := fmt.Sprintf("$%d\r\n%s\r\n", len(value.value), value.value)
 	connection.Write([]byte(response))
 }
