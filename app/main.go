@@ -58,22 +58,9 @@ func handle(line []byte, connection net.Conn) {
 			return
 		}
 	}
-
-	handleBasicCommand(strings.TrimRight(string(line), "\x00"), connection)
 }
 
-func handleBasicCommand(line string, connection net.Conn) {
-	command := strings.Split(line, " ")
 
-	switch strings.ToUpper(command[0]) {
-	case "PING":
-		pingBasic(connection)
-	case "ECHO":
-		echo(command[1:], connection)
-	default:
-		connection.Write([]byte("-ERR unknown command '" + command[0] + "'\r\n"))
-	}
-}
 
 func handleEncodedCommand(line string, connection net.Conn) {
 	dataType, tokens := getRESPType(line)
