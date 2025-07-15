@@ -52,6 +52,10 @@ func handleConnection(connection net.Conn) {
 func handle(line []byte, connection net.Conn) {
 	firstByte := []int32{'+', '-', ':', '*'}
 
+	if len(line) == 0 {
+		return
+	}
+
 	for _, prefix := range firstByte {
 		if line[0] == byte(prefix) {
 			handleEncodedCommand(strings.TrimRight(string(line),"\x00"), connection)
