@@ -27,14 +27,12 @@ func main() {
 			os.Exit(1)
 		}
 
-		handleConnection(connection)
+		go handleConnection(connection)
 	}
 
 }
 
 func handleConnection(connection net.Conn) {
-	defer connection.Close()
-
 	data := make([]byte, 2048)
 	_, err := connection.Read(data)
 
