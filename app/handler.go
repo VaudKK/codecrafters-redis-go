@@ -13,7 +13,7 @@ import (
 
 
 func echo(tokens []string, connection net.Conn) {
-	fmt.Println("ECHO command received with tokens:", tokens)
+	fmt.Println("Length of tokens: ", len(tokens))
 	response := ""
 	for _, token := range tokens[1:] {
 		response += fmt.Sprintf("$%d\r\n%s\r\n", len(token), token)
