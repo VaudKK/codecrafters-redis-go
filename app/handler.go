@@ -89,7 +89,8 @@ func get(tokens []string, connection net.Conn) {
 }
 
 func readKeys(tokens []string, connection net.Conn) {
-	readDatabaseFile(fmt.Sprintf("%s%c%s", redisConfig.Dir, os.PathSeparator, redisConfig.DBFileName))
+	data := readDatabaseFile(fmt.Sprintf("%s%c%s", redisConfig.Dir, os.PathSeparator, redisConfig.DBFileName))
+	fmt.Println(parseRdb(data))
 }
 
 func writeArray(contents map[string]int) string {
