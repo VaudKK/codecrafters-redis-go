@@ -13,16 +13,22 @@ func readDatabase(path string) map[string]string {
 		return nil
 	}
 
-	data := make([]byte,1024)
+	data := make([]byte, 1024)
 
-	_,err = file.Read(data)
+	_, err = file.Read(data)
 
 	if err != nil {
-		fmt.Println("Error reading file: ",err)
+		fmt.Println("Error reading file: ", err)
 		return nil
 	}
 
-	fmt.Println("File contents",string(data))
+	header := data[:0xFA]
+
+	fmt.Println("Header", string(header))
+
+	metadata := data[0xFA:0xFE]
+
+	fmt.Println("Metadata", string(metadata))
 
 	return nil
 }
