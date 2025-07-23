@@ -90,17 +90,18 @@ func get(tokens []string, connection net.Conn) {
 
 
 func readKeys(token []string, connection net.Conn){
+	fmt.Println(token)
 	key := token[1]
 
 	if key == "*"{
-		var data map[string]int
+		data := make(map[string]int,0)
 		for _,value := range keyValue{
 			data[value.value] = len(value.value)
 		}
 		connection.Write([]byte(writeArray(data)))
 	}else if strings.HasSuffix(key,"*"){
 		prefix := strings.TrimSuffix(key,"*")
-		var data map[string]int
+		data := make(map[string]int,0)
 		for k,value := range keyValue {
 			if strings.HasPrefix(k,prefix){
 				data[value.value] = len(value.value)
