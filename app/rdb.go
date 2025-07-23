@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 func readDatabase(path string) map[string]string {
@@ -22,9 +23,7 @@ func readDatabase(path string) map[string]string {
 		return nil
 	}
 
-	header := data[:9]
-
-	fmt.Println(string(header))
-
+	fmt.Println("File contents",string(data))
+	
 	return nil
 }
