@@ -38,7 +38,10 @@ func config(tokens []string, connection net.Conn){
 	if tokens[1] == "GET"{
 		switch(tokens[2]){
 		case "dir":
-			data := map[string]int{"dir":3,redisConfig.Dir:len(redisConfig.Dir)}
+			data := map[string]int{"dir":len("dir"),redisConfig.Dir:len(redisConfig.Dir)}
+			connection.Write([]byte(writeArray(data)))
+		case "dbfilename":
+			data := map[string]int{"dbfilename":len("dbfilename"),redisConfig.DBFileName:len(redisConfig.DBFileName)}
 			connection.Write([]byte(writeArray(data)))
 		}
 	}
