@@ -24,6 +24,7 @@ func main() {
 	
 	flag.StringVar(&redisConfig.Dir,"dir","./","RDB File Directory")
 	flag.StringVar(&redisConfig.DBFileName,"dbfilename","file.rdb","RDB File Name")
+	flag.Parse()
 
 	startServer()
 }
