@@ -5,7 +5,14 @@ import (
 	"os"
 )
 
-func readDatabase(path string) map[string]string {
+const EOF = 0xFF
+const AUX = 0xFA
+const RESIZEDB = 0xFB
+const SELECTDB = 0xFE
+const EXPIRETIME = 0xFD
+const EXPIRETIMEMS = 0xFC
+
+func readDatabaseFile(path string) []byte {
 	file, err := os.Open(path)
 
 	if err != nil {
@@ -13,7 +20,7 @@ func readDatabase(path string) map[string]string {
 		return nil
 	}
 
-	data := make([]byte, 1024)
+	data := make([]byte, 0)
 
 	_, err = file.Read(data)
 
@@ -22,10 +29,7 @@ func readDatabase(path string) map[string]string {
 		return nil
 	}
 
-	header := data[:0xFA]
-	fmt.Println("Header", string(header))
-	metadata := data[0xFA:0xFE]
-	fmt.Println("Metadata", string(metadata))
+	fmt.Println(string(data[:9]))
 
 	return nil
 }
