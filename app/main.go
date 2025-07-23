@@ -18,11 +18,12 @@ type Config struct{
 	DBFileName string
 }
 
-func main() {
-	config := Config{}
+var redisConfig Config
 
-	flag.StringVar(&config.Dir,"dir","./","RDB File Directory")
-	flag.StringVar(&config.DBFileName,"dbfilename","file.rdb","RDB File Name")
+func main() {
+	
+	flag.StringVar(&redisConfig.Dir,"dir","./","RDB File Directory")
+	flag.StringVar(&redisConfig.DBFileName,"dbfilename","file.rdb","RDB File Name")
 
 	startServer()
 }

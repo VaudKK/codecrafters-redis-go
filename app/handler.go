@@ -13,6 +13,7 @@ import (
 	"ECHO": echo,
 	"SET":  set,
 	"GET":  get,
+	"CONFIG": config,
 }
 
 var keyValue = make(map[string]struct{
@@ -31,6 +32,16 @@ func echo(tokens []string, connection net.Conn) {
 
 func ping(tokens []string,connection net.Conn) {
 	connection.Write([]byte("+PONG\r\n"))
+}
+
+func config(tokens []string, connection net.Conn){
+	if tokens[1] == "GET"{
+		switch(tokens[2]){
+		case "dir":
+			data := map[string]int{"dir":3,redisConfig.Dir:len(redisConfig.Dir)}
+			connection.Write([]byte(writeArray(data)))
+		}
+	}
 }
 
 func set(tokens []string, connection net.Conn) {
@@ -70,4 +81,16 @@ func get(tokens []string, connection net.Conn) {
 
 	response := fmt.Sprintf("$%d\r\n%s\r\n", len(value.value), value.value)
 	connection.Write([]byte(response))
+}
+
+
+func writeArray(contents map[string]int) string {
+	length := len(contents)
+	value := fmt.Sprintf("*%d\r\n",length)
+
+	for key,val := range contents {
+		value += fmt.Sprintf("$%d\r\r%s\r\n",val,key)
+	}
+
+	return value
 }
