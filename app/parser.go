@@ -46,12 +46,12 @@ func parse(respType RESPType,tokens []string, connection net.Conn) {
 func parseArray(tokens []string) []string {
 	data := make([]string, 0)
 
-	for _, token := range tokens {
+	for index, token := range tokens {
 		if strings.HasPrefix(token, "$") {
 			continue
 		}
 
-		if strings.HasPrefix(token, "*") {
+		if(strings.HasPrefix(token, "*") && index > 0) {
 			continue
 		}
 
