@@ -24,7 +24,7 @@ func readDatabase(path string) map[string]string {
 
 	header := data[:9]
 
-	fmt.Println(header)
+	fmt.Println(string(header))
 
 	return nil
 }
