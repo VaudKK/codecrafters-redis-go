@@ -89,7 +89,7 @@ func writeArray(contents map[string]int) string {
 	value := fmt.Sprintf("*%d\r\n",length)
 
 	for key,val := range contents {
-		value += fmt.Sprintf("$%d\r\r%s\r\n",val,key)
+		value += fmt.Sprintf("$%d\r\n%s\r\n",val,key)
 	}
 
 	return value
