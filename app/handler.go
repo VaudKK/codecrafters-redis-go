@@ -3,26 +3,24 @@ package main
 import (
 	"fmt"
 	"net"
+	"os"
 	"strconv"
-	"strings"
 	"time"
 )
 
-
- var Handler = map[string] func([]string,net.Conn){
-	"PING": ping,
-	"ECHO": echo,
-	"SET":  set,
-	"GET":  get,
+var Handler = map[string]func([]string, net.Conn){
+	"PING":   ping,
+	"ECHO":   echo,
+	"SET":    set,
+	"GET":    get,
 	"CONFIG": config,
-	"KEYS": readKeys,
+	"KEYS":   readKeys,
 }
 
-var keyValue = make(map[string]struct{
-	value string
+var keyValue = make(map[string]struct {
+	value      string
 	expiration int64
 })
-
 
 func echo(tokens []string, connection net.Conn) {
 	response := ""
@@ -32,29 +30,32 @@ func echo(tokens []string, connection net.Conn) {
 	connection.Write([]byte(response))
 }
 
-func ping(tokens []string,connection net.Conn) {
+func ping(tokens []string, connection net.Conn) {
 	connection.Write([]byte("+PONG\r\n"))
 }
 
-func config(tokens []string, connection net.Conn){
-	if tokens[1] == "GET"{
-		switch(tokens[2]){
+func config(tokens []string, connection net.Conn) {
+	if tokens[1] == "GET" {
+		switch tokens[2] {
 		case "dir":
-			data := map[string]int{"dir":len("dir"),redisConfig.Dir:len(redisConfig.Dir)}
+			data := map[string]int{"dir": len("dir"), redisConfig.Dir: len(redisConfig.Dir)}
 			connection.Write([]byte(writeArray(data)))
 		case "dbfilename":
-			data := map[string]int{"dbfilename":len("dbfilename"),redisConfig.DBFileName:len(redisConfig.DBFileName)}
+			data := map[string]int{"dbfilename": len("dbfilename"), redisConfig.DBFileName: len(redisConfig.DBFileName)}
 			connection.Write([]byte(writeArray(data)))
 		}
 	}
 }
 
 func set(tokens []string, connection net.Conn) {
-	_,ok := keyValue[tokens[1]]
+	_, ok := keyValue[tokens[1]]
 
 	if !ok {
-		keyValue[tokens[1]] = struct{value string; expiration int64}{
-			value: tokens[2],
+		keyValue[tokens[1]] = struct {
+			value      string
+			expiration int64
+		}{
+			value:      tokens[2],
 			expiration: -1,
 		}
 	}
@@ -70,12 +71,11 @@ func set(tokens []string, connection net.Conn) {
 	connection.Write([]byte("+OK\r\n"))
 }
 
-func setPx(key string, px int64){
+func setPx(key string, px int64) {
 	value := keyValue[key]
 	value.expiration = time.Now().UnixMilli() + px
 	keyValue[key] = value
 }
-
 
 func get(tokens []string, connection net.Conn) {
 	value, ok := keyValue[tokens[1]]
@@ -88,54 +88,21 @@ func get(tokens []string, connection net.Conn) {
 	connection.Write([]byte(response))
 }
 
-
-func readKeys(token []string, connection net.Conn){
-	fmt.Println("Token values: ",token)
-	key := token[1]
-
-	if key == "*"{
-		data := make(map[string]int,0)
-		for _,value := range keyValue{
-			data[value.value] = len(value.value)
-		}
-		connection.Write([]byte(writeArray(data)))
-	}else if strings.HasSuffix(key,"*"){
-		prefix := strings.TrimSuffix(key,"*")
-		data := make(map[string]int,0)
-		for k,value := range keyValue {
-			if strings.HasPrefix(k,prefix){
-				data[value.value] = len(value.value)
-			}
-		}
-		if len(data) < 1 {
-			writeNoKeyFound(connection)
-			return
-		}
-		connection.Write([]byte(writeArray(data)))
-	}else{
-		for k,value := range keyValue {
-			if k == key {
-				writeArray(map[string]int{value.value:len(value.value)})
-				return
-			}
-		}
-
-		writeNoKeyFound(connection)
-	}
+func readKeys(tokens []string, connection net.Conn) {
+	readDatabase(fmt.Sprintf("%s%c%s", redisConfig.Dir, os.PathSeparator, redisConfig.DBFileName))
 }
-
 
 func writeArray(contents map[string]int) string {
 	length := len(contents)
-	value := fmt.Sprintf("*%d\r\n",length)
+	value := fmt.Sprintf("*%d\r\n", length)
 
-	for key,val := range contents {
-		value += fmt.Sprintf("$%d\r\n%s\r\n",val,key)
+	for key, val := range contents {
+		value += fmt.Sprintf("$%d\r\n%s\r\n", val, key)
 	}
 
 	return value
 }
 
-func writeNoKeyFound(connection net.Conn){
+func writeNoKeyFound(connection net.Conn) {
 	connection.Write([]byte("$-1\r\n"))
 }

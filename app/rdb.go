@@ -6,12 +6,25 @@ import (
 )
 
 func readDatabase(path string) map[string]string {
-	_, err := os.Open(path)
+	file, err := os.Open(path)
 
 	if err != nil {
-		fmt.Println("Error reading rdb file: ", err)
+		fmt.Println("Error opening rdb file: ", err)
 		return nil
 	}
+
+	data := make([]byte,1024)
+
+	_,err = file.Read(data)
+
+	if err != nil {
+		fmt.Println("Error reading file: ",err)
+		return nil
+	}
+
+	header := data[:9]
+
+	fmt.Println(header)
 
 	return nil
 }
