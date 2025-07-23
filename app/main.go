@@ -22,8 +22,8 @@ var redisConfig Config
 
 func main() {
 	
-	flag.StringVar(&redisConfig.Dir,"dir","./","RDB File Directory")
-	flag.StringVar(&redisConfig.DBFileName,"dbfilename","file.rdb","RDB File Name")
+	flag.StringVar(&redisConfig.Dir,"dir","","RDB File Directory")
+	flag.StringVar(&redisConfig.DBFileName,"dbfilename","","RDB File Name")
 	flag.Parse()
 
 	startServer()

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -14,6 +15,7 @@ import (
 	"SET":  set,
 	"GET":  get,
 	"CONFIG": config,
+	"KEYS": readKeys,
 }
 
 var keyValue = make(map[string]struct{
@@ -78,12 +80,47 @@ func setPx(key string, px int64){
 func get(tokens []string, connection net.Conn) {
 	value, ok := keyValue[tokens[1]]
 	if !ok || (value.expiration > -1 && value.expiration < time.Now().UnixMilli()) {
-		connection.Write([]byte("$-1\r\n"))
+		writeNoKeyFound(connection)
 		return
 	}
 
 	response := fmt.Sprintf("$%d\r\n%s\r\n", len(value.value), value.value)
 	connection.Write([]byte(response))
+}
+
+
+func readKeys(token []string, connection net.Conn){
+	key := token[1]
+
+	if key == "*"{
+		var data map[string]int
+		for _,value := range keyValue{
+			data[value.value] = len(value.value)
+		}
+		connection.Write([]byte(writeArray(data)))
+	}else if strings.HasSuffix(key,"*"){
+		prefix := strings.TrimSuffix(key,"*")
+		var data map[string]int
+		for k,value := range keyValue {
+			if strings.HasPrefix(k,prefix){
+				data[value.value] = len(value.value)
+			}
+		}
+		if len(data) < 1 {
+			writeNoKeyFound(connection)
+			return
+		}
+		connection.Write([]byte(writeArray(data)))
+	}else{
+		for k,value := range keyValue {
+			if k == key {
+				writeArray(map[string]int{value.value:len(value.value)})
+				return
+			}
+		}
+
+		writeNoKeyFound(connection)
+	}
 }
 
 
@@ -96,4 +133,8 @@ func writeArray(contents map[string]int) string {
 	}
 
 	return value
+}
+
+func writeNoKeyFound(connection net.Conn){
+	connection.Write([]byte("$-1\r\n"))
 }
