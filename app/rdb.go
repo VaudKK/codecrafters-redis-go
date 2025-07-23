@@ -45,7 +45,13 @@ func parseRdb(fileData []byte) string {
 		case AUX:
 			value := readMetadata(fileData)
 			value += readMetadata(fileData)
-			fmt.Println(value)
+		case SELECTDB:
+			value := readByte(fileData)
+			fmt.Println("Database index: ", string(value))
+		case RESIZEDB:
+			hashTableSize := int(readByte(fileData))
+			keysWithExpiry := int(readByte(fileData))
+			fmt.Println("HashTable info: ",hashTableSize,keysWithExpiry)
 		}
 	}
 	
