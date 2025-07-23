@@ -23,11 +23,8 @@ func readDatabase(path string) map[string]string {
 	}
 
 	header := data[:0xFA]
-
 	fmt.Println("Header", string(header))
-
 	metadata := data[0xFA:0xFE]
-
 	fmt.Println("Metadata", string(metadata))
 
 	return nil
