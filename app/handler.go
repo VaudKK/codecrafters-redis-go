@@ -90,7 +90,7 @@ func get(tokens []string, connection net.Conn) {
 
 
 func readKeys(token []string, connection net.Conn){
-	fmt.Println(token)
+	fmt.Println("Token values: ",token)
 	key := token[1]
 
 	if key == "*"{
