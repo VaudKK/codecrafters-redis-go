@@ -37,10 +37,8 @@ func readDatabaseFile(path string) []byte {
 func parseRdb(fileData []byte) string {
 	readHeader(fileData)
 
-	currentByte := fileData[pos]
-
-	for currentByte != EOF {
-		switch currentByte {
+	for fileData[pos] != EOF {
+		switch fileData[pos] {
 		case AUX:
 			value := readMetadata(fileData)
 			value += readMetadata(fileData)
