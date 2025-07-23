@@ -34,7 +34,6 @@ func readDatabaseFile(path string) []byte {
 	return data
 }
 
-
 func parseRdb(fileData []byte) string {
 	readHeader(fileData)
 
@@ -51,30 +50,32 @@ func parseRdb(fileData []byte) string {
 		case RESIZEDB:
 			hashTableSize := int(readByte(fileData))
 			keysWithExpiry := int(readByte(fileData))
-			fmt.Println("HashTable info: ",hashTableSize,keysWithExpiry)
+			fmt.Println("HashTable info: ", hashTableSize, keysWithExpiry)
 		case 0x00:
 			key := readStringEncoding(fileData)
 			value := readStringEncoding(fileData)
-			keyValue[string(key)] = struct{value string; expiration int64}{
-				string(value),-1,
+			keyValue[string(key)] = struct {
+				value      string
+				expiration int64
+			}{
+				string(value), -1,
 			}
 			fmt.Println("Read first key: ", keyValue)
 		}
 	}
-	
+
 	return ""
-	
+
 }
 
-func readHeader(fileData []byte) string{
-	return string(readBytesOffset(fileData,0,9))
+func readHeader(fileData []byte) string {
+	return string(readBytesOffset(fileData, 0, 9))
 }
 
-func readMetadata(fileData []byte) string{
+func readMetadata(fileData []byte) string {
 	length := int(readByte(fileData))
-	return string(readBytesOffset(fileData,pos,length))
+	return string(readBytesOffset(fileData, pos, length))
 }
-
 
 func readByte(fileData []byte) byte {
 	value := fileData[pos]
@@ -82,19 +83,19 @@ func readByte(fileData []byte) byte {
 	return value
 }
 
-func readBytesOffset(fileData []byte,offset int, length int) []byte{
+func readBytesOffset(fileData []byte, offset int, length int) []byte {
 	destination := fileData[offset:(offset + length)]
-	pos += length - 1
+	pos += length
 	return destination
 }
 
-func readBytes(fileData []byte,length int) []byte{
-	value := fileData[pos:(pos + length)]
-	pos += length -1
-	return value
-}
+// func readBytes(fileData []byte,length int) []byte{
+// 	value := fileData[pos:(pos + length)]
+// 	pos += length -1
+// 	return value
+// }
 
-func readStringEncoding(fileData[]byte) []byte{
+func readStringEncoding(fileData []byte) []byte {
 	length := int(readByte(fileData))
-	return readBytesOffset(fileData,pos,length)
+	return readBytesOffset(fileData, pos, length)
 }
