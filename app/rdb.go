@@ -36,14 +36,12 @@ func readDatabaseFile(path string) []byte {
 
 func parseRdb(fileData []byte) string {
 	//Read the first 9 bytes
-	value := readHeader(fileData)
-	fmt.Println("Header:",string(value))
+	readHeader(fileData)
 
 	for  {
 		switch readByte(fileData) {
 		case AUX:
 			value := readMetadata(fileData)
-			fmt.Println("Read:",value)
 			value += readMetadata(fileData)
 			fmt.Println("Aux:", string(value))
 		case SELECTDB:
@@ -90,6 +88,7 @@ func readBytesOffset(fileData []byte, offset int, length int) []byte {
 		j += 1
 	}
 
+	fmt.Println("Offset read:",string(data))
 	return data
 }
 
