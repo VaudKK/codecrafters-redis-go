@@ -40,7 +40,7 @@ func parseRdb(fileData []byte) string {
 	fmt.Println("Position after read header:",pos)
 
 	for  {
-		switch fileData[pos] {
+		switch readByte(fileData) {
 		case AUX:
 			value := readMetadata(fileData)
 			fmt.Println("Next metadata will start from:",pos)
