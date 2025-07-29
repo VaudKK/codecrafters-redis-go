@@ -35,9 +35,11 @@ func readDatabaseFile(path string) []byte {
 }
 
 func parseRdb(fileData []byte) string {
-	readHeader(fileData)
+	header := readHeader(fileData)
+	fmt.Println("Read header: ",string(header))
 
 	for fileData[pos] != EOF {
+		fmt.Println("Current byte position ", pos)
 		switch fileData[pos] {
 		case AUX:
 			value := readMetadata(fileData)
