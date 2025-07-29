@@ -38,7 +38,6 @@ func parseRdb(fileData []byte) string {
 	readHeader(fileData)
 
 	for fileData[pos] != EOF {
-		fmt.Println("Current Position:", pos)
 		switch fileData[pos] {
 		case AUX:
 			value := readMetadata(fileData)
