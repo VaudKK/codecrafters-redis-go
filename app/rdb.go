@@ -76,7 +76,8 @@ func readHeader(fileData []byte) string {
 }
 
 func readMetadata(fileData []byte) string {
-	length := int(readByte(fileData))
+	length := int(fileData[pos])
+	fmt.Println("Length ", length)
 	return string(readBytesOffset(fileData, pos, length))
 }
 
