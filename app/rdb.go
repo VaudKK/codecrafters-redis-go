@@ -82,6 +82,7 @@ func readMetadata(fileData []byte) string {
 	fmt.Println("Current position:",pos)
 	pos += 1
 	length := int(fileData[pos])
+	fmt.Println("Length:",length)
 
 	pos += 1
 	return string(readBytesOffset(fileData, pos, length))
