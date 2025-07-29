@@ -50,6 +50,8 @@ func parseRdb(fileData []byte) string {
 			hashTableSize := int(readByte(fileData))
 			keysWithExpiry := int(readByte(fileData))
 			fmt.Println("HashTable info: ", hashTableSize, keysWithExpiry)
+		case EXPIRETIME:
+
 		// case 0x00:
 		// 	key := readStringEncoding(fileData)
 		// 	value := readStringEncoding(fileData)
@@ -75,7 +77,7 @@ func readHeader(fileData []byte) string {
 
 func readMetadata(fileData []byte) string {
 	length := int(readByte(fileData))
-	fmt.Println("Length: ", length)
+	fmt.Println("Metadata length ", length)
 	return string(readBytesOffset(fileData, pos, length))
 }
 
