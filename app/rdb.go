@@ -37,6 +37,7 @@ func readDatabaseFile(path string) []byte {
 func parseRdb(fileData []byte) string {
 	//Read the first 9 bytes
 	readHeader(fileData)
+	fmt.Println("Position after read header:",pos)
 
 	for  {
 		switch fileData[pos] {
