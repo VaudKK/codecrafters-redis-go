@@ -22,7 +22,7 @@ func readDatabaseFile(path string) []byte {
 		return nil
 	}
 
-	data := make([]byte, 256)
+	data := make([]byte, 512)
 
 	_, err = file.Read(data)
 
