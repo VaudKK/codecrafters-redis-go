@@ -31,6 +31,9 @@ func readDatabaseFile(path string) []byte {
 		return nil
 	}
 
+	fileInfo, _ := os.Stat(path)
+	fmt.Println("File size ", fileInfo.Size())
+
 	return data
 }
 
