@@ -39,6 +39,7 @@ func parseRdb(fileData []byte) string {
 	fmt.Println("Read header: ",string(header))
 
 	for fileData[pos] != EOF {
+		fmt.Printf("Byte %b",fileData[pos])
 		switch fileData[pos] {
 		case AUX:
 			value := readMetadata(fileData)
@@ -50,16 +51,16 @@ func parseRdb(fileData []byte) string {
 			hashTableSize := int(readByte(fileData))
 			keysWithExpiry := int(readByte(fileData))
 			fmt.Println("HashTable info: ", hashTableSize, keysWithExpiry)
-		case 0x00:
-			key := readStringEncoding(fileData)
-			value := readStringEncoding(fileData)
-			keyValue[string(key)] = struct {
-				value      string
-				expiration int64
-			}{
-				string(value), -1,
-			}
-			fmt.Println("Read first key: ", keyValue)
+		// case 0x00:
+		// 	key := readStringEncoding(fileData)
+		// 	value := readStringEncoding(fileData)
+		// 	keyValue[string(key)] = struct {
+		// 		value      string
+		// 		expiration int64
+		// 	}{
+		// 		string(value), -1,
+		// 	}
+		// 	fmt.Println("Read first key: ", keyValue)
 		}
 	}
 
