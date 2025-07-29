@@ -77,7 +77,7 @@ func readHeader(fileData []byte) string {
 func readMetadata(fileData []byte) string {
 	pos += 1
 	length := int(fileData[pos])
-	return string(readBytesOffset(fileData, pos, length))
+	return string(readBytesOffset(fileData, pos + 1, length))
 }
 
 func readByte(fileData []byte) byte {
@@ -88,7 +88,6 @@ func readByte(fileData []byte) byte {
 }
 
 func readBytesOffset(fileData []byte, offset int, length int) []byte {
-	pos += 1
 	destination := fileData[offset+1 : (offset + length)]
 	pos += length
 	return destination
