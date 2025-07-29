@@ -96,7 +96,7 @@ func readByte(fileData []byte) byte {
 
 func readBytesOffset(fileData []byte, offset int, length int) []byte {
 	destination := fileData[offset : (offset + length)]
-	pos += length
+	pos += length - 1
 	return destination
 }
 
