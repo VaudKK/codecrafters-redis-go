@@ -42,7 +42,7 @@ func parseRdb(fileData []byte) string {
 		switch fileData[pos] {
 		case AUX:
 			value := readMetadata(fileData)
-			fmt.Println("Next metadata will startr from:",pos)
+			fmt.Println("Next metadata will start from:",pos)
 			value += readMetadata(fileData)
 			fmt.Println("Aux:", string(value))
 		case SELECTDB:
@@ -73,8 +73,6 @@ func readMetadata(fileData []byte) string {
 }
 
 func readByte(fileData []byte) byte {
-	//Advance by one to read the value
-	pos += 1
 	value := fileData[pos]
 
 	//Advance by one to the next byte to be read
@@ -83,10 +81,15 @@ func readByte(fileData []byte) byte {
 }
 
 func readBytesOffset(fileData []byte, offset int, length int) []byte {
-	destination := fileData[offset:(offset + length)]
+	data := make([]byte,length)
 
-	pos += length - 1
-	return destination
+	j := 0
+	for i := offset; i < length; i++ {
+		data[j] = readByte(fileData)
+		j += 1
+	}
+
+	return data
 }
 
 // func readBytes(fileData []byte,length int) []byte{
