@@ -98,6 +98,7 @@ func readByte(fileData []byte) byte {
 func readBytesOffset(fileData []byte, offset int, length int) []byte {
 	destination := fileData[offset : (offset + length)]
 	pos += length
+	fmt.Println("Positon after read:",pos)
 	return destination
 }
 
