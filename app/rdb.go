@@ -38,6 +38,7 @@ func parseRdb(fileData []byte) string {
 	readHeader(fileData)
 
 	for fileData[pos] != EOF {
+		fmt.Println("Current position:",pos)
 		switch fileData[pos] {
 		case AUX:
 			value := readMetadata(fileData)
@@ -45,11 +46,11 @@ func parseRdb(fileData []byte) string {
 			fmt.Println("Aux:", string(value))
 		case SELECTDB:
 			value := readByte(fileData)
-			fmt.Println("Database index: ", string(value))
+			fmt.Println("Database index:", string(value))
 		case RESIZEDB:
 			hashTableSize := int(readByte(fileData))
 			keysWithExpiry := int(readByte(fileData))
-			fmt.Println("HashTable info: ", hashTableSize, keysWithExpiry)
+			fmt.Println("HashTable info:", hashTableSize, keysWithExpiry)
 
 			// case 0x00:
 			// 	key := readStringEncoding(fileData)
@@ -77,7 +78,9 @@ func readHeader(fileData []byte) string {
 func readMetadata(fileData []byte) string {
 	pos += 1
 	length := int(fileData[pos])
-	return string(readBytesOffset(fileData, pos + 1, length))
+
+	pos += 1
+	return string(readBytesOffset(fileData, pos, length))
 }
 
 func readByte(fileData []byte) byte {
