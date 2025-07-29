@@ -38,10 +38,11 @@ func parseRdb(fileData []byte) string {
 	//Read the first 9 bytes
 	readHeader(fileData)
 
-	for fileData[pos] != EOF {
+	for  {
 		switch fileData[pos] {
 		case AUX:
 			value := readMetadata(fileData)
+			fmt.Println("Next metadata will startr from:",pos)
 			value += readMetadata(fileData)
 			fmt.Println("Aux:", string(value))
 		case SELECTDB:
@@ -53,26 +54,12 @@ func parseRdb(fileData []byte) string {
 			fmt.Println("HashTable info:", hashTableSize, keysWithExpiry)
 		case EXPIRETIME:
 		case EXPIRETIMEMS:
+		case EOF:
+			return ""
 		default:
 			return ""
-
-			// case 0x00:
-			// 	key := readStringEncoding(fileData)
-			// 	value := readStringEncoding(fileData)
-			// 	keyValue[string(key)] = struct {
-			// 		value      string
-			// 		expiration int64
-			// 	}{
-			// 		string(value), -1,
-			// 	}
-			// 	fmt.Println("Read first key: ", keyValue)
 		}
 	}
-
-	fmt.Println("Last position ", pos)
-
-	return ""
-
 }
 
 func readHeader(fileData []byte) string {
