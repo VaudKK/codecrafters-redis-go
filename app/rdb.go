@@ -38,6 +38,7 @@ func parseRdb(fileData []byte) string {
 	//Read the first 9 bytes
 	value := readHeader(fileData)
 	fmt.Println("Header:",string(value))
+	
 	for  {
 		switch readByte(fileData) {
 		case AUX:
