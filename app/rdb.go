@@ -35,8 +35,8 @@ func readDatabaseFile(path string) []byte {
 }
 
 func parseRdb(fileData []byte) string {
-	header := readHeader(fileData)
-	fmt.Println("Read header: ",string(header))
+	readHeader(fileData)
+	fmt.Println("Current position ", pos)
 
 	for fileData[pos] != EOF {
 		switch fileData[pos] {
@@ -61,7 +61,6 @@ func parseRdb(fileData []byte) string {
 		// 	}
 		// 	fmt.Println("Read first key: ", keyValue)
 		}
-		pos += 1
 	}
 
 	fmt.Println("Last position ",pos)
