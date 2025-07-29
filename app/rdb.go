@@ -22,7 +22,7 @@ func readDatabaseFile(path string) []byte {
 		return nil
 	}
 
-	data := make([]byte, 512)
+	data := make([]byte, 1024)
 
 	_, err = file.Read(data)
 
@@ -63,6 +63,8 @@ func parseRdb(fileData []byte) string {
 		}
 		pos += 1
 	}
+
+	fmt.Println("Last position ",pos)
 
 	return ""
 
