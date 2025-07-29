@@ -50,6 +50,11 @@ func parseRdb(fileData []byte) string {
 			hashTableSize := int(readByte(fileData))
 			keysWithExpiry := int(readByte(fileData))
 			fmt.Println("HashTable info:", hashTableSize, keysWithExpiry)
+		case EXPIRETIME:
+		case EXPIRETIMEMS:
+		default:
+			fmt.Println("Error")
+			return ""
 
 			// case 0x00:
 			// 	key := readStringEncoding(fileData)
