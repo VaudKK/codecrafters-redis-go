@@ -80,15 +80,7 @@ func readHeader(fileData []byte) string {
 }
 
 func readMetadata(fileData []byte) string {
-	fmt.Println("Position before reading next byte:",pos)
-	//Advance position by one to read the length
-	pos += 1
-	length := int(fileData[pos])
-	fmt.Println("Length to be read:",length)
-
-	//Advance position by one to start reading the data
-	pos += 1
-	fmt.Println("The position for next offset:",pos)
+	length := int(readByte(fileData))
 	return string(readBytesOffset(fileData, pos, length))
 }
 
