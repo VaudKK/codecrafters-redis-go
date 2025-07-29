@@ -52,20 +52,20 @@ func parseRdb(fileData []byte) string {
 			fmt.Println("HashTable info: ", hashTableSize, keysWithExpiry)
 		case EXPIRETIME:
 
-		// case 0x00:
-		// 	key := readStringEncoding(fileData)
-		// 	value := readStringEncoding(fileData)
-		// 	keyValue[string(key)] = struct {
-		// 		value      string
-		// 		expiration int64
-		// 	}{
-		// 		string(value), -1,
-		// 	}
-		// 	fmt.Println("Read first key: ", keyValue)
+			// case 0x00:
+			// 	key := readStringEncoding(fileData)
+			// 	value := readStringEncoding(fileData)
+			// 	keyValue[string(key)] = struct {
+			// 		value      string
+			// 		expiration int64
+			// 	}{
+			// 		string(value), -1,
+			// 	}
+			// 	fmt.Println("Read first key: ", keyValue)
 		}
 	}
 
-	fmt.Println("Last position ",pos)
+	fmt.Println("Last position ", pos)
 
 	return ""
 
@@ -77,13 +77,12 @@ func readHeader(fileData []byte) string {
 
 func readMetadata(fileData []byte) string {
 	length := int(readByte(fileData))
-	fmt.Println("Metadata length ", length)
 	return string(readBytesOffset(fileData, pos, length))
 }
 
 func readByte(fileData []byte) byte {
+	fmt.Println("Current position ", pos)
 	value := fileData[pos]
-	fmt.Printf("Byte value %b\n", value)
 	pos += 1
 	return value
 }
