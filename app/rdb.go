@@ -35,6 +35,7 @@ func readDatabaseFile(path string) []byte {
 }
 
 func parseRdb(fileData []byte) string {
+	//Read the first 9 bytes
 	readHeader(fileData)
 
 	for fileData[pos] != EOF {
@@ -79,24 +80,29 @@ func readHeader(fileData []byte) string {
 }
 
 func readMetadata(fileData []byte) string {
+	//Advance position by one to read the length
 	pos += 1
 	length := int(fileData[pos])
-	fmt.Println("Length:",length)
 
+	//Advance position by one to start reading the data
 	pos += 1
 	return string(readBytesOffset(fileData, pos, length))
 }
 
 func readByte(fileData []byte) byte {
+	//Advance by one to read the value
 	pos += 1
 	value := fileData[pos]
+
+	//Advance by one to the next byte to be read
 	pos += 1
 	return value
 }
 
 func readBytesOffset(fileData []byte, offset int, length int) []byte {
 	destination := fileData[offset : (offset + length)]
-	pos += length - 1
+	//Advance by length instead of length - 1 so that pos will point to the next value
+	pos += length
 	return destination
 }
 
