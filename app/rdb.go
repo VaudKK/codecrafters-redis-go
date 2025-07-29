@@ -39,7 +39,7 @@ func parseRdb(fileData []byte) string {
 	fmt.Println("Read header: ",string(header))
 
 	for fileData[pos] != EOF {
-		fmt.Printf("Byte %b",fileData[pos])
+		fmt.Printf("Byte %b\t",fileData[pos])
 		switch fileData[pos] {
 		case AUX:
 			value := readMetadata(fileData)
