@@ -84,6 +84,7 @@ func readMetadata(fileData []byte) string {
 	//Advance position by one to read the length
 	pos += 1
 	length := int(fileData[pos])
+	fmt.Println("Length to be read:",length)
 
 	//Advance position by one to start reading the data
 	pos += 1
