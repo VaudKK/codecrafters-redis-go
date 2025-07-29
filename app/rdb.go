@@ -22,7 +22,7 @@ func readDatabaseFile(path string) []byte {
 		return nil
 	}
 
-	data := make([]byte, 1024)
+	data := make([]byte, 256)
 
 	_, err = file.Read(data)
 
@@ -95,6 +95,5 @@ func readBytesOffset(fileData []byte, offset int, length int) []byte {
 
 func readStringEncoding(fileData []byte) []byte {
 	length := int(readByte(fileData))
-	fmt.Println("length: ", length)
 	return readBytesOffset(fileData, pos, length)
 }
