@@ -5,12 +5,12 @@ import (
 	"os"
 )
 
-const EOF = 0xFF
-const AUX = 0xFA
-const RESIZEDB = 0xFB
-const SELECTDB = 0xFE
-const EXPIRETIME = 0xFD
-const EXPIRETIMEMS = 0xFC
+const EOF = 0xff
+const AUX = 0xfa
+const RESIZEDB = 0xfb
+const SELECTDB = 0xfe
+const EXPIRETIME = 0xfd
+const EXPIRETIMEMS = 0xfc
 
 var pos int = 0
 
@@ -39,7 +39,6 @@ func parseRdb(fileData []byte) string {
 	fmt.Println("Read header: ",string(header))
 
 	for fileData[pos] != EOF {
-		fmt.Println("Current byte position ", pos)
 		switch fileData[pos] {
 		case AUX:
 			value := readMetadata(fileData)
