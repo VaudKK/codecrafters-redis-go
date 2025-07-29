@@ -31,9 +31,6 @@ func readDatabaseFile(path string) []byte {
 		return nil
 	}
 
-	fileInfo, _ := os.Stat(path)
-	fmt.Println("File size ", fileInfo.Size())
-
 	return data
 }
 
@@ -43,6 +40,7 @@ func parseRdb(fileData []byte) string {
 	for fileData[pos] != EOF {
 		switch fileData[pos] {
 		case AUX:
+			pos += 1
 			value := readMetadata(fileData)
 			value += readMetadata(fileData)
 			fmt.Println("Aux ", string(value))
@@ -53,7 +51,6 @@ func parseRdb(fileData []byte) string {
 			hashTableSize := int(readByte(fileData))
 			keysWithExpiry := int(readByte(fileData))
 			fmt.Println("HashTable info: ", hashTableSize, keysWithExpiry)
-		case EXPIRETIME:
 
 			// case 0x00:
 			// 	key := readStringEncoding(fileData)
