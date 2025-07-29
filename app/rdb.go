@@ -38,13 +38,13 @@ func parseRdb(fileData []byte) string {
 	//Read the first 9 bytes
 	value := readHeader(fileData)
 	fmt.Println("Header:",string(value))
-	
+
 	for  {
 		switch readByte(fileData) {
 		case AUX:
 			value := readMetadata(fileData)
 			fmt.Println("Read:",value)
-			fmt.Println("Next metadata will start from:",pos)
+
 			value += readMetadata(fileData)
 			fmt.Println("Aux:", string(value))
 		case SELECTDB:
