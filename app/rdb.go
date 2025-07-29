@@ -83,6 +83,7 @@ func readMetadata(fileData []byte) string {
 
 func readByte(fileData []byte) byte {
 	value := fileData[pos]
+	fmt.Printf("Byte value %b\n", value)
 	pos += 1
 	return value
 }
