@@ -42,6 +42,7 @@ func parseRdb(fileData []byte) string {
 		case AUX:
 			value := readMetadata(fileData)
 			value += readMetadata(fileData)
+			fmt.Println("Aux: ", string(value))
 		case SELECTDB:
 			value := readByte(fileData)
 			fmt.Println("Database index: ", string(value))
@@ -88,7 +89,7 @@ func readByte(fileData []byte) byte {
 
 func readBytesOffset(fileData []byte, offset int, length int) []byte {
 	pos += 1
-	destination := fileData[offset + 1:(offset + length)]
+	destination := fileData[offset+1 : (offset + length)]
 	pos += length
 	return destination
 }
