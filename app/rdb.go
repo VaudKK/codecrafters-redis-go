@@ -53,7 +53,6 @@ func parseRdb(fileData []byte) string {
 		case EXPIRETIME:
 		case EXPIRETIMEMS:
 		default:
-			fmt.Println("Error")
 			return ""
 
 			// case 0x00:
